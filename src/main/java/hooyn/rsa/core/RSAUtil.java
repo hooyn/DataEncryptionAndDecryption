@@ -43,9 +43,12 @@ public class RSAUtil {
     }
 
     public static PrivateKey getPrivateKeyFromBase64String(final String keyString) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        System.out.println("keyString = " + keyString);
 
         final String privateKeyString =
-                keyString.replaceAll("\\n",  "").replaceAll("-{5}[ a-zA-Z]*-{5}", "");
+                keyString.replaceAll("\\n",  "").replaceAll("-{5}[a-zA-Z]*-{5}", "");
+
+        System.out.println("privateKeyString = " + privateKeyString);
 
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 

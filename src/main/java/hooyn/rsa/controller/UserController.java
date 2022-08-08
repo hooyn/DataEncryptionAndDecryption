@@ -34,7 +34,7 @@ public class UserController {
         return user1.toString();
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login222")
     public Map<String, String> login(@RequestBody LoginRequest request) throws NoSuchAlgorithmException {
         User byEmail = userRepository.findByEmail(request.getEmail());
         Map<String, String> response = new HashMap<>();
@@ -42,6 +42,8 @@ public class UserController {
         // RSA에서 필요한 공개키와 개인키를 가져옵니다.
         KeyPair keyPair = RSAUtil.genRSAKeyPair();
         PublicKey publicKey = keyPair.getPublic();
+
+        System.out.println("publicKey = " + publicKey);
 
         // 공개키를 Base64 인코딩한 문자일을 만듭니다.
         byte[] bytePublicKey = publicKey.getEncoded();
