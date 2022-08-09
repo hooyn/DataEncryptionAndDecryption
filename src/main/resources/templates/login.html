@@ -5,42 +5,110 @@
     <title>로그인</title>
 </head>
 <body>
+<br>
+<div>
+    <div class="input-box">
+        <label for="username">아이디   </label>
+        <input id="username_join" type="text" name="username" placeholder="아이디">
+    </div>
 
-<input type="button" id="login_button" onclick="button_click2();" value="Login"/>
+    <div class="input-box">
+        <label for="password">비밀번호</label>
+        <input id="password_join" type="password" name="password" placeholder="비밀번호">
+    </div>
+    <input type="button" style="WIDTH: 250pt; HEIGHT: 45pt" id="join_button" onclick="button_click1();" value="Join"/>
+</div>
+<br><br><br>
+<div>
+    <div class="input-box">
+        <label for="username">아이디   </label>
+        <input id="username" type="text" name="username" placeholder="아이디">
+    </div>
 
-<input type="button" id="encryption" onclick="button_click3();" value="Encryption"/>
-
-<input type="button" id="decryption" onclick="button_click4();" value="Decryption"/>
+    <div class="input-box">
+        <label for="password">비밀번호</label>
+        <input id="password" type="password" name="password" placeholder="비밀번호">
+    </div>
+    <input type="button" style="WIDTH: 250pt; HEIGHT: 45pt" id="login_button" onclick="button_click2();" value="Login"/>
+</div>
+<br><br><br>
+<div>
+    <input type="button" style="WIDTH: 250pt; HEIGHT: 45pt" id="encryption" onclick="button_click3();" value="Client To Server [Data Send]"/>
+    <br>
+    <textarea style="WIDTH: 250pt; HEIGHT: 45pt" id="data"></textarea>
+</div>
+<br><br><br>
+<div>
+    <input type="button" style="WIDTH: 250pt; HEIGHT: 45pt" id="decryption" onclick="button_click4();" value="Data Decoding At Server [Data Receive]"/>
+</div>
+<br><br><br>
   <script>
 
       var rsaKeyInfo;
       var requestInfo;
-      var decryptedData;
 
-      function button_click2(){
+      const sleep = async (ms) => {
+          return new Promise(
+              (resolve, reject) =>
+                  setTimeout(
+                      () => resolve(),
+                      ms * 1000
+                  )
+          );
+      };
+
+      async function button_click1(){
+          console.log("회원 정보 입력");
+
+          await sleep(1);
+          console.log("...");
+          await sleep(1);
+
+          fetch("http://localhost:8080/join", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  email: document.getElementById("username_join").value,
+                  password: document.getElementById("password_join").value
+              }),
+          })
+              .then((response) => console.log(response));
+
+          console.log("회원가입 성공");
+      }
+
+      async function button_click2(){
+          console.log("로그인 정보 입력")
+          await sleep(1);
+
           fetch("http://localhost:8080/login222", {
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                  email: "ownerchef2",
-                  password: "owner9809~"
+                  email: document.getElementById("username").value,
+                  password: document.getElementById("password").value
               }),
           })
               .then((response) => response.json())
               .then((data) => rsaKeyInfo=data);
+
+          console.log("...");
+          await sleep(1);
+          console.log("로그인 성공");
+          console.log(rsaKeyInfo);
       }
 
-      function button_click3(){
-          console.log(rsaKeyInfo);
+      async function button_click3(){
+          console.log("Client에서 Server로 데이터 암호화 후 키와 함께 전송")
+          await sleep(1);
 
           var rsaKeyString = JSON.stringify(rsaKeyInfo);
           var rsaParsing = rsaKeyString.split('"');
           var rsaKeyData = rsaParsing[3];//RSA 키 받아오기
-
-          console.log(rsaKeyData);
-
 
           fetch("http://localhost:8080/data/en", {
               method: "POST",
@@ -49,23 +117,26 @@
               },
               body: JSON.stringify({
                   rsaKey: rsaKeyData,
-                  data: "프론트를 활용한 데이터 암복화화"
+                  data: document.getElementById('data').value
               }),
           })
               .then((response) => response.json())
               .then((data) => requestInfo=data);
+
+          console.log("...");
+          await sleep(1);
+          console.log("데이터 전송 완료")
+          console.log(requestInfo);
       }
 
-      function button_click4(){
-          console.log(requestInfo)
+      async function button_click4(){
+          console.log("서버에서 데이터 복호화 처리")
+          await sleep(1);
 
           var requestString = JSON.stringify(requestInfo);
           var requestParsing = requestString.split('"');
           var encryptedAESKeydata = requestParsing[3];
           var encryptedDatadata = requestParsing[7];
-
-          console.log(encryptedAESKeydata);
-          console.log(encryptedDatadata);
 
           fetch("http://localhost:8080/data/de", {
               method: "POST",
