@@ -1,5 +1,5 @@
 # DataEncryptionAndDecryption
-RSA를 이용한 데이터 암호화, 복호화
+AES와 RSA를 이용한 데이터 암호화, 복호화
 
 ##### Server-Client 간 암복호화
 
