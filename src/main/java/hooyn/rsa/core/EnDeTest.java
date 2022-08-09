@@ -5,7 +5,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import java.security.*;
 import java.util.Base64;
 
-public class Main {
+public class EnDeTest {
     public static void main(String[] args) throws Exception {
         //AES 키 생성
         String AESKey = RandomStringUtils.randomAlphanumeric(32);
@@ -29,8 +29,6 @@ public class Main {
 //        // 복호화 합니다.
 //        String decrypted = RSAUtil.getDecryptText(encrypted, privateKey);
 //        System.out.println("decrypted = " + decrypted);
-
-
 
         // 공개키를 Base64 인코딩한 문자일을 만듭니다.
         byte[] bytePublicKey = publicKey.getEncoded();
