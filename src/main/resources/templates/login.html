@@ -5,43 +5,82 @@
     <title>로그인</title>
 </head>
 <body>
-  <!-- 유저가 입력하는 form -->
-  <form action="/login" method="post" id="loginForm">
-    <fieldset>
-      <legend class="screen_out">로그인 폼</legend>
 
-      <label for="email">이메일</label>
-      <input type="text" id="email" name="email" autofocus autocomplete="off" required />
+<input type="button" id="login_button" onclick="button_click2();" value="Login"/>
 
-      <label for="password">비밀번호</label>
-      <input type="password" id="password" name="password" autocomplete="off" required />
+<input type="button" id="encryption" onclick="button_click3();" value="Encryption"/>
 
-      <button type="submit">
-        <i class="fa fa-sign-in"></i> 로그인
-      </button>
-    </fieldset>
-  </form>
-
-  <!-- javascript lib load -->
-  <script type="text/javascript"  src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-  <script type="text/javascript"  src="/jsbn.js"></script>
-  <script type="text/javascript"  src="/prng4.js"></script>
-  <script type="text/javascript"  src="/rng.js"></script>
-  <script type="text/javascript"  src="/rsa.js"></script>
-
-  <!-- 유저 입력 form의 submit event 재정의 -->
+<input type="button" id="decryption" onclick="button_click4();" value="Decryption"/>
   <script>
-    // Server로부터 받은 공개키 입력
-    let rsa;
-    rsa = new RSAKey();
-    rsa.setPublic("${modulus}", "${exponent}");
 
-    document.getElementById('loginForm').onsubmit = function(){
-      this.email = rsa.encrypt(this.email);
-      this.password = rsa.encrypt(this.password);
+      var rsaKeyInfo;
+      var requestInfo;
+      var decryptedData;
 
-      alert(this.email.value + " " + this.password.value);
-    }
+      function button_click2(){
+          fetch("http://localhost:8080/login222", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  email: "ownerchef2",
+                  password: "owner9809~"
+              }),
+          })
+              .then((response) => response.json())
+              .then((data) => rsaKeyInfo=data);
+      }
+
+      function button_click3(){
+          console.log(rsaKeyInfo);
+
+          var rsaKeyString = JSON.stringify(rsaKeyInfo);
+          var rsaParsing = rsaKeyString.split('"');
+          var rsaKeyData = rsaParsing[3];//RSA 키 받아오기
+
+          console.log(rsaKeyData);
+
+
+          fetch("http://localhost:8080/data/en", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  rsaKey: rsaKeyData,
+                  data: "프론트를 활용한 데이터 암복화화"
+              }),
+          })
+              .then((response) => response.json())
+              .then((data) => requestInfo=data);
+      }
+
+      function button_click4(){
+          console.log(requestInfo)
+
+          var requestString = JSON.stringify(requestInfo);
+          var requestParsing = requestString.split('"');
+          var encryptedAESKeydata = requestParsing[3];
+          var encryptedDatadata = requestParsing[7];
+
+          console.log(encryptedAESKeydata);
+          console.log(encryptedDatadata);
+
+          fetch("http://localhost:8080/data/de", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  encryptedAESKey: encryptedAESKeydata,
+                  encryptedData: encryptedDatadata
+              }),
+          })
+              .then((response) => response.json())
+              .then((data) => console.log(data));
+      }
+
   </script>
 </body>
 </html>

@@ -50,11 +50,11 @@ public class UserController {
         String base64PublicKey = Base64.getEncoder().encodeToString(bytePublicKey);
 
         if(request.getPassword().equals(byEmail.getPassword())){
-            response.put("RSA Key", base64PublicKey);
+            response.put("RSAKey", base64PublicKey);
             response.put("message", "로그인 성공");
             return response;
         } else {
-            response.put("RSA Key", null);
+            response.put("RSAKey", null);
             response.put("message", "로그인 실패");
             return response;
         }
@@ -70,8 +70,8 @@ public class UserController {
 
         PublicKey publicKey = RSAUtil.getPublicKeyFromBase64String(request.getRsaKey());
         String encryptAESKey = RSAUtil.getEncryptText(aesKey, publicKey);
-        response.put("Encrypted AES Key", encryptAESKey);
-        response.put("Encrypted Data", encrypt);
+        response.put("EncryptedAESKey", encryptAESKey);
+        response.put("EncryptedData", encrypt);
 
         return response;
     }
