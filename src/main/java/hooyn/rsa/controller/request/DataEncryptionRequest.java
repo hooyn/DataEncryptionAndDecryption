@@ -1,4 +1,4 @@
-package hooyn.rsa.controller;
+package hooyn.rsa.controller.request;
 
 import lombok.Getter;
 

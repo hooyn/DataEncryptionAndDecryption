@@ -1,5 +1,9 @@
 package hooyn.rsa.controller;
 
+import hooyn.rsa.controller.request.DataDecryptionRequest;
+import hooyn.rsa.controller.request.DataEncryptionRequest;
+import hooyn.rsa.controller.request.JoinRequest;
+import hooyn.rsa.controller.request.LoginRequest;
 import hooyn.rsa.core.AESUtil;
 import hooyn.rsa.core.RSAUtil;
 import hooyn.rsa.entity.User;
@@ -29,7 +33,7 @@ public class UserController {
         return user1.toString();
     }
 
-    @PostMapping("/login222")
+    @PostMapping("/login")
     public Map<String, String> login(@RequestBody LoginRequest request) throws NoSuchAlgorithmException {
         User byEmail = userRepository.findByEmail(request.getEmail());
         Map<String, String> response = new HashMap<>();

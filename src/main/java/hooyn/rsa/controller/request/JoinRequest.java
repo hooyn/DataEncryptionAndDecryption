@@ -1,9 +1,9 @@
-package hooyn.rsa.controller;
+package hooyn.rsa.controller.request;
 
 import lombok.Getter;
 
 @Getter
-public class LoginRequest {
+public class JoinRequest {
     private String email;
     private String password;
 }

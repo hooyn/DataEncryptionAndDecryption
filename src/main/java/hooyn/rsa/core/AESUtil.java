@@ -1,7 +1,5 @@
 package hooyn.rsa.core;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;

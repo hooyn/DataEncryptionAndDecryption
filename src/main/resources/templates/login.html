@@ -83,7 +83,7 @@
           console.log("로그인 정보 입력")
           await sleep(1);
 
-          fetch("http://localhost:8080/login222", {
+          fetch("http://localhost:8080/login", {
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
@@ -151,7 +151,6 @@
               .then((response) => response.json())
               .then((data) => console.log(data));
       }
-
   </script>
 </body>
 </html>
